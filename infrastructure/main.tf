@@ -66,7 +66,8 @@ resource "aws_s3_bucket" "docker_run_bucket" {
 
 # Create s3 object from the compressed docker run config
 resource "aws_s3_bucket_object" "docker_run_object" {
-  key    = "${local.docker_run_config_sha}.zip"
+  key = "${sha256(local_file.docker_run_config.content)}.zip"
+  #key    = "${local.docker_run_config_sha}.zip"
   bucket = aws_s3_bucket.docker_run_bucket.id
   source = data.archive_file.docker_run.output_path
   tags   = local.tags
